@@ -28,7 +28,7 @@ module alu_control(
                        FUNCTslt: select = ALUslt;
                        default:  select = ALUx;
                    endcase
-            default: select = ALUx;            // unknown (2'b11)
+            default: select = ALUx;
         endcase
     end
 endmodule
