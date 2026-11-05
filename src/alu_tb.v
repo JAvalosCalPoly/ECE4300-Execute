@@ -21,7 +21,7 @@ module alu_test;
         b = 'b0111;  // 7
         control = 'b011;
         $display("A = %b\t B = %b", a, b);
-        $monitor("ALUop = %b\t result = %b\t zero = %b", control, result, zero);
+        $monitor("ALUop = %b\t result = %d\t zero = %b", control, result, zero);
         #1 control = 'b100;  // invalid -> x
         #1 control = 'b010;  // add -> 17
         #1 control = 'b111;  // slt -> 0
