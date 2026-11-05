@@ -1,10 +1,5 @@
 `timescale 1ns / 1ps
-/*
-Execute stage testbench - for viewing in the waveform window.
-Clock period = 10 ns (posedge at 5, 15, 25, ...).
-Inputs change every 10 ns on the falling edge, so each step's results
-appear in the EX/MEM latch outputs 5 ns later (at t + 5).
-*/
+
 module executeTB;
     reg clk;
     reg [1:0]  ctlwb_in;
