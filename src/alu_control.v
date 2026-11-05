@@ -7,7 +7,7 @@ module alu_control(
     input  wire [1:0] aluop,
     output reg  [2:0] select
 );
-    parameter Rtype = 2'b10, lwsw = 2'b00, Itype = 2'b01, unknown = 2'b11;
+    parameter Rtype = 2'b10, lwsw = 2'b00, Itype = 2'b01;
 
     parameter ALUadd = 3'b010, ALUsub = 3'b110, ALUand = 3'b000,
               ALUor  = 3'b001, ALUslt = 3'b111, ALUx   = 3'b011;
@@ -15,8 +15,6 @@ module alu_control(
     parameter FUNCTadd = 6'b100000, FUNCTsub = 6'b100010,
               FUNCTand = 6'b100100, FUNCTor  = 6'b100101,
               FUNCTslt = 6'b101010;
-
-    initial select = 0;
 
     always @* begin
         case (aluop)
