@@ -155,7 +155,7 @@ The testbench should verify the following behavior:
 | `alu_op = 2'b01` | ALU-control selects subtraction for branch comparison |
 
 ## Timing Diagram
-<img width="2326" height="1346" alt="image" src="https://github.com/user-attachments/assets/ad2d9649-fb02-46f8-b70b-8dd82e28701b" />
+![](images/image.png)
 
 
 

@@ -1,5 +1,5 @@
 $date
-	Wed Nov  4 22:22:58 2026
+	Fri Nov  6 19:51:31 2026
 $end
 $version
 	Icarus Verilog
@@ -31,35 +31,32 @@ $var reg 1 4 regdst $end
 $var reg 32 5 s_extendout [31:0] $end
 $var reg 2 6 wb_ctl [1:0] $end
 $scope module uut $end
-$var wire 2 7 aluop [1:0] $end
+$var wire 2 7 alu_op [1:0] $end
 $var wire 1 + alusrc $end
 $var wire 1 , clk $end
-$var wire 6 8 funct [5:0] $end
-$var wire 5 9 instrout_1511 [4:0] $end
-$var wire 5 : instrout_2016 [4:0] $end
-$var wire 3 ; m_ctl [2:0] $end
-$var wire 32 < npcout [31:0] $end
-$var wire 32 = rdata1 [31:0] $end
-$var wire 32 > rdata2 [31:0] $end
+$var wire 3 8 ctlm_in [2:0] $end
+$var wire 2 9 ctlwb_in [1:0] $end
+$var wire 6 : funct [5:0] $end
+$var wire 5 ; instr_1511 [4:0] $end
+$var wire 5 < instr_2016 [4:0] $end
+$var wire 32 = npc [31:0] $end
+$var wire 32 > rdata1 [31:0] $end
+$var wire 32 ? rdata2 [31:0] $end
 $var wire 1 4 regdst $end
-$var wire 32 ? s_extendout [31:0] $end
-$var wire 2 @ wb_ctl [1:0] $end
-$var wire 1 ! zero $end
-$var wire 2 A wb_ctlout [1:0] $end
-$var wire 32 B rdata2out [31:0] $end
+$var wire 32 @ s_extend [31:0] $end
+$var wire 1 ! zero_out $end
+$var wire 32 A rdata2_out [31:0] $end
+$var wire 5 B muxout_out [4:0] $end
 $var wire 5 C muxout [4:0] $end
-$var wire 1 $ memwrite $end
-$var wire 1 % memread $end
-$var wire 3 D m_out [2:0] $end
-$var wire 5 E five_bit_muxout [4:0] $end
+$var wire 2 D ctlwb_out [1:0] $end
+$var wire 3 E ctlm_out [2:0] $end
 $var wire 3 F control [2:0] $end
-$var wire 1 ' branch $end
 $var wire 32 G b [31:0] $end
 $var wire 1 H aluzero $end
 $var wire 32 I aluout [31:0] $end
-$var wire 32 J alu_result [31:0] $end
+$var wire 32 J alu_result_out [31:0] $end
 $var wire 32 K adder_out [31:0] $end
-$var wire 32 L EX_MEM_NPC [31:0] $end
+$var wire 32 L add_result [31:0] $end
 $scope module adder3 $end
 $var wire 32 M add_in1 [31:0] $end
 $var wire 32 N add_in2 [31:0] $end
@@ -182,8 +179,8 @@ bx P
 bx O
 bx N
 bx M
-b0 L
-bx K
+bx L
+b0 K
 b0 J
 b0 I
 1H
@@ -232,19 +229,19 @@ x$
 x%
 x'
 bx &
-bx E
+bx B
 bx x
 bx #
-bx B
+bx A
 bx y
 1!
 bx )
-bx L
+bx K
 bx t
-bx D
+bx E
 bx v
 bx "
-bx A
+bx D
 bx w
 1,
 #10000
@@ -266,61 +263,61 @@ b11110 o
 14
 0+
 b100000 -
-b100000 8
+b100000 :
 b100000 [
 b10 *
 b10 7
 b10 Z
 b1010 .
-b1010 9
+b1010 ;
 b1010 k
 b101 /
-b101 :
+b101 <
 b101 l
-b1101000 K
+b1101000 L
 b1101000 O
 b1101000 n
 b100 5
-b100 ?
+b100 @
 b100 N
 b100 z
 b10100 3
-b10100 >
+b10100 ?
 b10100 s
 b10100 {
 b1010 2
-b1010 =
+b1010 >
 b1010 P
 b1100100 1
-b1100100 <
+b1100100 =
 b1100100 M
 b0 0
-b0 ;
+b0 8
 b0 p
 b10 6
-b10 @
+b10 9
 b10 q
 #15000
 0$
 0%
 0'
 b1010 &
-b1010 E
+b1010 B
 b1010 x
 b10100 #
-b10100 B
+b10100 A
 b10100 y
 b11110 (
 b11110 J
 b11110 u
 0!
 b1101000 )
-b1101000 L
+b1101000 K
 b1101000 t
-b0 D
+b0 E
 b0 v
 b10 "
-b10 A
+b10 D
 b10 w
 1,
 #20000
@@ -333,10 +330,10 @@ b0 Y
 b0 o
 0,
 b100010 -
-b100010 8
+b100010 :
 b100010 [
 b10100 2
-b10100 =
+b10100 >
 b10100 P
 #25000
 b0 (
@@ -357,18 +354,18 @@ b1 Y
 b1 o
 0,
 b101010 -
-b101010 8
+b101010 :
 b101010 [
 b1010 3
-b1010 >
+b1010 ?
 b1010 s
 b1010 {
 b101 2
-b101 =
+b101 >
 b101 P
 #35000
 b1010 #
-b1010 B
+b1010 A
 b1010 y
 b1 (
 b1 J
@@ -396,37 +393,37 @@ b1111100000 o
 b0 *
 b0 7
 b0 Z
-b1011100 K
+b1011100 L
 b1011100 O
 b1011100 n
 b11111111111111111111111111111000 5
-b11111111111111111111111111111000 ?
+b11111111111111111111111111111000 @
 b11111111111111111111111111111000 N
 b11111111111111111111111111111000 z
 b1111101000 2
-b1111101000 =
+b1111101000 >
 b1111101000 P
 b10 0
-b10 ;
+b10 8
 b10 p
 b11 6
-b11 @
+b11 9
 b11 q
 #45000
 1%
 b101 &
-b101 E
+b101 B
 b101 x
 b1111100000 (
 b1111100000 J
 b1111100000 u
 b1011100 )
-b1011100 L
+b1011100 K
 b1011100 t
-b10 D
+b10 E
 b10 v
 b11 "
-b11 A
+b11 D
 b11 w
 1,
 #50000
@@ -446,43 +443,43 @@ b0 o
 b1 *
 b1 7
 b1 Z
-b1101000 K
+b1101000 L
 b1101000 O
 b1101000 n
 b100 5
-b100 ?
+b100 @
 b100 N
 b100 z
 b101010 3
-b101010 >
+b101010 ?
 b101010 s
 b101010 {
 b101010 2
-b101010 =
+b101010 >
 b101010 P
 b100 0
-b100 ;
+b100 8
 b100 p
 b0 6
-b0 @
+b0 9
 b0 q
 #55000
 0%
 1'
 b101010 #
-b101010 B
+b101010 A
 b101010 y
 b0 (
 b0 J
 b0 u
 1!
 b1101000 )
-b1101000 L
+b1101000 K
 b1101000 t
-b100 D
+b100 E
 b100 v
 b0 "
-b0 A
+b0 D
 b0 w
 1,
 #60000

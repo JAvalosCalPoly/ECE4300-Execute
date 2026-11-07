@@ -30,27 +30,25 @@ module executeTB;
 
     execute uut (
         .clk(clk),
-        .wb_ctl(wb_ctl),
-        .m_ctl(m_ctl),
+        .ctlwb_in(wb_ctl),
+        .ctlm_in(m_ctl),
         .regdst(regdst),
         .alusrc(alusrc),
-        .aluop(aluop),
+        .alu_op(aluop),
         .funct(funct),
-        .npcout(npcout),
+        .npc(npcout),
         .rdata1(rdata1),
         .rdata2(rdata2),
-        .s_extendout(s_extendout),
-        .instrout_2016(instrout_2016),
-        .instrout_1511(instrout_1511),
-        .wb_ctlout(wb_ctlout),
-        .branch(branch),
-        .memread(memread),
-        .memwrite(memwrite),
-        .EX_MEM_NPC(EX_MEM_NPC),
-        .zero(zero),
-        .alu_result(alu_result),
-        .rdata2out(rdata2out),
-        .five_bit_muxout(five_bit_muxout)
+        .s_extend(s_extendout),
+        .instr_2016(instrout_2016),
+        .instr_1511(instrout_1511),
+        .ctlwb_out(wb_ctlout),
+        .ctlm_out({branch, memread, memwrite}),  // split M bus
+        .adder_out(EX_MEM_NPC),
+        .zero_out(zero),
+        .alu_result_out(alu_result),
+        .rdata2_out(rdata2out),
+        .muxout_out(five_bit_muxout)
     );
 
     initial begin

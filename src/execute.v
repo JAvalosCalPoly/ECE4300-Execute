@@ -5,63 +5,55 @@ ALU control, ALU, and EX/MEM latch.
 */
 module execute (
     input  wire        clk,
-    input  wire [ 1:0] wb_ctl,          // from ID/EX
-    input  wire [ 2:0] m_ctl,           // {branch, memread, memwrite}
-    input  wire        regdst,
-    alusrc,
-    input  wire [ 1:0] aluop,
+    input  wire [ 1:0] ctlwb_in,        // from ID/EX
+    input  wire [ 2:0] ctlm_in,         // {branch, memread, memwrite}
+    input  wire [31:0] npc,
+    input  wire [31:0] rdata1,
+    input  wire [31:0] rdata2,
+    input  wire [31:0] s_extend,
+    input  wire [ 4:0] instr_2016,
+    input  wire [ 4:0] instr_1511,
+    input  wire [ 1:0] alu_op,
     input  wire [ 5:0] funct,           // Instr[5:0]
-    input  wire [31:0] npcout,
-    rdata1,
-    rdata2,
-    s_extendout,
-    input  wire [ 4:0] instrout_2016,
-    instrout_1511,
-    output wire [ 1:0] wb_ctlout,       // to MEM/WB
-    output wire        branch,
-    memread,
-    memwrite,
-    output wire [31:0] EX_MEM_NPC,      // branch target
-    output wire        zero,
-    output wire [31:0] alu_result,
-    rdata2out,
-    output wire [ 4:0] five_bit_muxout
+    input  wire        alusrc,
+    input  wire        regdst,
+    output wire [ 1:0] ctlwb_out,       // to MEM/WB
+    output wire [ 2:0] ctlm_out,        // {branch, memread, memwrite}
+    output wire [31:0] adder_out,       // branch target
+    output wire        zero_out,
+    output wire [31:0] alu_result_out,
+    output wire [31:0] rdata2_out,
+    output wire [ 4:0] muxout_out
 );
     // internal
-    wire [31:0] adder_out, b, aluout;
+    wire [31:0] add_result, b, aluout;
     wire [4:0] muxout;
     wire [2:0] control;
     wire       aluzero;
-    wire [2:0] m_out;  // latched M ctl
-
-    // split M ctl
-    assign branch   = m_out[2];
-    assign memread  = m_out[1];
-    assign memwrite = m_out[0];
 
     adder adder3 (
-        .add_in1(npcout),
-        .add_in2(s_extendout),  // add << 2 if PC+4
-        .add_out(adder_out)
+        .add_in1(npc),
+        .add_in2(s_extend),  // add << 2 if PC+4
+        .add_out(add_result)
     );
 
     bottom_mux bottom_mux3 (
         .y  (muxout),
-        .a  (instrout_1511),  // regdst = 1
-        .b  (instrout_2016),  // regdst = 0
+        .a  (instr_1511),  // regdst = 1
+        .b  (instr_2016),  // regdst = 0
         .sel(regdst)
     );
 
     top_mux top_mux3 (
         .y     (b),
-        .a     (s_extendout),  // alusrc = 1
-        .b     (rdata2),       // alusrc = 0
+        .a     (s_extend),  // alusrc = 1
+        .b     (rdata2),    // alusrc = 0
         .alusrc(alusrc)
     );
 
     alu_control alu_control3 (
         .funct (funct),
-        .aluop (aluop),
+        .aluop (alu_op),
         .select(control)
     );
 
@@ -75,19 +67,19 @@ module execute (
 
     ex_mem ex_mem3 (
         .clk(clk),
-        .ctlwb_in(wb_ctl),
-        .ctlm_in(m_ctl),
-        .adder_in(adder_out),
+        .ctlwb_in(ctlwb_in),
+        .ctlm_in(ctlm_in),
+        .adder_in(add_result),
         .zero_in(aluzero),
         .alu_result_in(aluout),
         .rdata2_in(rdata2),
         .muxout_in(muxout),
-        .ctlwb_out(wb_ctlout),
-        .ctlm_out(m_out),
-        .adder_out(EX_MEM_NPC),
-        .zero_out(zero),
-        .alu_result_out(alu_result),
-        .rdata2_out(rdata2out),
-        .muxout_out(five_bit_muxout)
+        .ctlwb_out(ctlwb_out),
+        .ctlm_out(ctlm_out),
+        .adder_out(adder_out),
+        .zero_out(zero_out),
+        .alu_result_out(alu_result_out),
+        .rdata2_out(rdata2_out),
+        .muxout_out(muxout_out)
     );
 endmodule
